@@ -1,6 +1,9 @@
 package io.github.josephsimutis
 
-abstract class CardGame(val players: Array<Player>) {
+import io.github.josephsimutis.card.Card
+import io.github.josephsimutis.card.Deck
+
+abstract class CardGame<C : Card>(val deck: Deck<C>, val players: Array<Player>) {
     var turn = 0
     var started = false
     var ended = false
@@ -20,6 +23,11 @@ abstract class CardGame(val players: Array<Player>) {
     open fun advanceTurn() {
         turn++
         if (turn > players.lastIndex) turn = 0
+        currentPlayer.preformTurn()
+    }
+
+    open fun drawCards(num: Int) {
+        currentPlayer.addCards(deck.draw(num))
     }
 
     open fun endGame() {
